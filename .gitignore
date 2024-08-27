@@ -1,0 +1,34 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs
+*.log
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# TypeScript
+*.tsbuildinfo
+
+# Dist
+dist/
+
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal
+
+# Docker
+docker-compose.override.yml
+docker-compose.override.*.yml
+.env
+
+# MacOS
+.DS_Store
+
+# Linux
+*.swp
