@@ -9,3 +9,42 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Customer {
+  id           Int           @id @default(autoincrement())
+  customerCode String
+  name         String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  measurement  Measurement[]
+
+  @@map("customers")
+}
+
+model MeasureType {
+  id          Int           @id @default(autoincrement())
+  type        String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Measurement Measurement[]
+}
+
+model Measurement {
+  id              Int         @id @default(autoincrement())
+  measureDatetime DateTime
+  measureValue    String
+  imageUrl        String
+  measureUUID     String
+  confirmedValue  String
+
+  customerId      Int         @map("customer_id")
+  customer        Customer    @relation(fields: [customerId], references: [id])
+
+  measureTypeId   Int         @map("measure_type_id")
+  measureType     MeasureType @relation(fields: [measureTypeId], references: [id])
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@map("measurements")
+}
