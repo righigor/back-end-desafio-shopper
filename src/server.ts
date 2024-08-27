@@ -1,5 +1,6 @@
 import fastify from "fastify";
 import dotenv from "dotenv";
+import measureTypeRoute from "./routes/measureTypeRoute";
 
 dotenv.config();
 const app = fastify();
@@ -8,6 +9,8 @@ const PORT = process.env.PORT || 3000;
 app.get("/", async (request, reply) => {
   return { hello: "world!!!" };
 });
+
+app.register(measureTypeRoute);
 
 app.listen({ port: Number(PORT) }, (err, address) => {
   if (err) {
