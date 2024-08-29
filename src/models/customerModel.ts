@@ -1,14 +1,14 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { CustomerType } from "../types/customerType";
 import { prisma } from "../lib/prisma";
 
 export default class CustomerModel {
   async createCustomer({ name }: CustomerType) {
     const customerCode = uuidv4();
-    const result =  await prisma.customer.create({
+    const result = await prisma.customer.create({
       data: {
         name,
-        customerCode
+        customerCode,
       },
     });
 
@@ -24,10 +24,9 @@ export default class CustomerModel {
   async getCustomerById(id: number) {
     const result = await prisma.customer.findUnique({
       where: {
-        id
-      }
+        id,
+      },
     });
-
     return { data: result };
   }
 }
