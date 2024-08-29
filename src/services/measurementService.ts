@@ -5,9 +5,9 @@ import {
 } from "../validations/measurementValidation";
 import MeasurementModel from "../models/measurementModel";
 import checkMeasurementInSameMonth from "../utils/checkMeasurementInSameMonth";
-import { getIdTypeByName } from "../utils/getIdTypeByName";
 import {
   ConfirmMeasurementTypeBody,
+  ListMeasurementTypeBody,
   MeasurementTypeBody,
 } from "../types/measurementType";
 import { verifyCustomerCode } from "../utils/verifyCustomerCode";
@@ -34,17 +34,7 @@ export default class MeasurementService {
           },
         };
       }
-      const measureTypeID = await getIdTypeByName(validateData.measure_type);
 
-      if (measureTypeID === 0) {
-        return {
-          status: "BAD_REQUEST",
-          data: {
-            error_code: "INVALID_DATA",
-            error_description: "Tipo de medida inválido",
-          },
-        };
-      }
       const validCustomerCode = await verifyCustomerCode(
         validateData.customer_code
       );
@@ -62,7 +52,7 @@ export default class MeasurementService {
         image: validateData.image,
         customerCode: validateData.customer_code,
         measureDatetime: validateData.measure_datetime,
-        measureTypeId: measureTypeID,
+        measureType: validateData.measure_type,
       });
 
       return { status: "SUCCESS", data };
@@ -143,5 +133,15 @@ export default class MeasurementService {
         },
       };
     }
+  }
+
+  async listMeasurement(obj: ListMeasurementTypeBody) {
+    const measurementModel = new MeasurementModel();
+
+    const { data } = await measurementModel.listMeasurement({
+      customerCode: obj.customer_code,
+      measureType: obj.measure_type,
+    });
+    return { status: "SUCCESS", data };
   }
 }

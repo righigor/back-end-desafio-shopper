@@ -1,6 +1,6 @@
 import { endOfMonth, parseISO, startOfMonth } from "date-fns";
 import { prisma } from "../lib/prisma";
-import { getIdTypeByName } from "./getIdTypeByName";
+
 
 export default async function checkMeasurementInSameMonth(
   measure_datetime: string,
@@ -16,7 +16,7 @@ export default async function checkMeasurementInSameMonth(
         gte: startOfMonthDate,
         lte: endOfMonthDate,
       },
-      measureTypeId: await getIdTypeByName(measure_type),
+      measureType: measure_type.toUpperCase(),
       customerCode: customer_code,
     },
   });

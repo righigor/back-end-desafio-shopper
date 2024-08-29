@@ -1,6 +1,7 @@
 import { prisma } from "../lib/prisma";
 import {
   ConfirmMeasurementTypeDB,
+  ListMeasurementTypeDB,
   MeasurementTypeDB,
 } from "../types/measurementType";
 
@@ -9,7 +10,7 @@ export default class MeasurementModel {
     image,
     customerCode,
     measureDatetime,
-    measureTypeId,
+    measureType,
   }: MeasurementTypeDB) {
     const measureValue = 0; // GERADO PELA IA
     const imgUrl = "string"; // GERADO PELA IA
@@ -19,7 +20,7 @@ export default class MeasurementModel {
         measureValue,
         imageUrl: imgUrl,
         measureDatetime: new Date(measureDatetime),
-        measureTypeId,
+        measureType: measureType.toUpperCase(),
         customerCode,
       },
       select: {
@@ -42,5 +43,37 @@ export default class MeasurementModel {
     });
 
     return { data: { success: true } };
+  }
+
+  async listMeasurement({ customerCode, measureType }: ListMeasurementTypeDB) {
+    const whereClause = {
+      customerCode,
+      ...(measureType && { measureTypeId: measureType }),
+    }
+
+    const data = await prisma.measurement.findMany({
+      where: whereClause,
+      select: {
+        customerCode: true,
+        measureUUID: true,
+        measureDatetime: true,
+        measureType: true,
+        hasConfirmed: true,
+        imageUrl: true,
+      }
+    });
+
+    const result =  {
+      customer_code: data[0].customerCode,
+      measurements: data.map((item) => ({
+        measure_uuid: item.measureUUID,
+        measure_datetime: item.measureDatetime,
+        measure_type: item.measureType,
+        has_confirmed: item.hasConfirmed,
+        image_url: item.imageUrl,
+      })),
+    }
+
+    return { data: result };
   }
 }

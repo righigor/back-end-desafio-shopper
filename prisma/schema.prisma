@@ -21,13 +21,6 @@ model Customer {
   @@map("customers")
 }
 
-model MeasureType {
-  id          Int           @id @default(autoincrement())
-  type        String
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  Measurement Measurement[]
-}
 
 model Measurement {
   id              Int      @id @default(autoincrement())
@@ -37,12 +30,10 @@ model Measurement {
   measureUUID     String   @unique @default(uuid())
   confirmedValue  Int      @default(0)
   hasConfirmed    Boolean  @default(false)
+  measureType   String
 
   customerCode String   @map("customer_code")
   customer     Customer @relation(fields: [customerCode], references: [customerCode])
-
-  measureTypeId Int         @map("measure_type_id")
-  measureType   MeasureType @relation(fields: [measureTypeId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

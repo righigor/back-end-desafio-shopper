@@ -19,4 +19,15 @@ export default class MeasurementController {
 
     reply.code(mapHttp(status)).send(data);
   }
+
+  async listMeasurement(request: FastifyRequest, reply: FastifyReply) {
+    const { customer_code } = request.params as { customer_code: string };
+    const measure_type = request.query as { measure_type?: string };
+    const measurementService = new MeasurementService();
+    const { status, data } = await measurementService.listMeasurement({
+      customer_code,
+      measure_type: measure_type.measure_type,
+    });
+    reply.code(mapHttp(status)).send(data);
+  }
 }

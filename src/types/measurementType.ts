@@ -9,7 +9,7 @@ export type MeasurementTypeDB = {
   image: string;
   customerCode: string;
   measureDatetime: string;
-  measureTypeId: number;
+  measureType: string;
 }
 
 export type ConfirmMeasurementTypeBody = {
@@ -20,4 +20,14 @@ export type ConfirmMeasurementTypeBody = {
 export type ConfirmMeasurementTypeDB = {
   measureUUID: string;
   confirmedValue: number;
+}
+
+export type ListMeasurementTypeBody = {
+  customer_code: string;
+  measure_type?: string;
+}
+
+export type ListMeasurementTypeDB = {
+  customerCode: string;
+  measureType?: string;
 }
