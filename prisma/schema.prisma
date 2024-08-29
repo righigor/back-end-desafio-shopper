@@ -12,7 +12,7 @@ datasource db {
 
 model Customer {
   id           Int           @id @default(autoincrement())
-  customerCode String
+  customerCode String        @unique
   name         String
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -30,21 +30,22 @@ model MeasureType {
 }
 
 model Measurement {
-  id              Int         @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   measureDatetime DateTime
-  measureValue    String
+  measureValue    Float
   imageUrl        String
-  measureUUID     String
-  confirmedValue  String
+  measureUUID     String   @unique @default(uuid())
+  confirmedValue  Int      @default(0)
+  hasConfirmed    Boolean  @default(false)
 
-  customerId      Int         @map("customer_id")
-  customer        Customer    @relation(fields: [customerId], references: [id])
+  customerCode String   @map("customer_code")
+  customer     Customer @relation(fields: [customerCode], references: [customerCode])
 
-  measureTypeId   Int         @map("measure_type_id")
-  measureType     MeasureType @relation(fields: [measureTypeId], references: [id])
+  measureTypeId Int         @map("measure_type_id")
+  measureType   MeasureType @relation(fields: [measureTypeId], references: [id])
 
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("measurements")
 }

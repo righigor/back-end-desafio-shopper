@@ -2,6 +2,7 @@ import fastify from "fastify";
 import dotenv from "dotenv";
 import measureTypeRoute from "./routes/measureTypeRoute";
 import customerRoute from "./routes/customerRoute";
+import measurementRoute from "./routes/measurementRoute";
 
 dotenv.config();
 const app = fastify();
@@ -13,6 +14,7 @@ app.get("/", async (request, reply) => {
 
 app.register(measureTypeRoute);
 app.register(customerRoute);
+app.register(measurementRoute);
 
 app.listen({ port: Number(PORT) }, (err, address) => {
   if (err) {

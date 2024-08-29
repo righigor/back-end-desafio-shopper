@@ -27,7 +27,6 @@ export default class CustomerModel {
         id
       }
     });
-
     return { data: result };
   }
 }
