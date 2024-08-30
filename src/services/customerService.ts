@@ -3,7 +3,7 @@ import { CustomerType } from "../types/customerType";
 
 export default class CustomerService {
   async createCustomer(name: CustomerType) {
-    if (!name) {
+    if (!name || name.name.length === 0) {
       return { status: 'BAD_REQUEST', data: { message: "O campo 'name' é obrigatório e não pode estar vazio."} };
     }
     const customerModel = new CustomerModel();
