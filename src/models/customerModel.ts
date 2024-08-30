@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
-import { CustomerType } from "../types/customerType";
+import { CustomerReturnType, CustomerType } from "../types/customerType";
 import { prisma } from "../lib/prisma";
 
 export default class CustomerModel {
-  async createCustomer({ name }: CustomerType) {
+  async createCustomer({ name }: CustomerType): Promise<{ data: CustomerReturnType }> {
     const customerCode = uuidv4();
     const result = await prisma.customer.create({
       data: {
